@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<script src="../browser/client.js"></script>
+	</head>
+	<body>
+		<script>
+			const socket = new EasySocket("ws://localhost:1000");
+			socket.on("connect", function() {
+				socket.send("test", 123, 321);
+			});
+		</script>
+	</body>
+</html>
