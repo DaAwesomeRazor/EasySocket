@@ -14,14 +14,15 @@ class Server {
 	
 	createListners() {
 		this.wss.on('connection', ws => {
-			const user = new User(ws);
-			this.emit("connection", [user]);
+			
+			const user = new User(this.conns.size, ws);
 			this.conns.set(this.conns.size, user);
-			ws.id = this.conns.size;
+			ws.user = user;
+			
+			this.emit("connection", [user]);
 			
 			ws.on('message', msg => {
-				const {id, args} = notepack.decode(msg);
-				user.emit(id, args);
+				ws.user.onMessage(msg);
 			})
 		})
 	}
@@ -38,18 +39,32 @@ class Server {
 	}
 }
 
-
 class User {
-	constructor(ws) {
+	constructor(id, ws) {
 		this.listeners = new Map();
 		this.ws = ws;
+		this.id = id;
+	}
+	
+	onMessage(msg) {
+		const {id, args} = notepack.decode(msg);
+		this.emitEvent(id, args);
+	}
+	
+	emit(id) {
+		var args = []
+		for (const arg of arguments) {
+			args.push(arg)
+		}
+		args.shift()
+		this.ws.send(notepack.encode({id, args}))
 	}
 	
 	on(id, func) {
 		this.listeners.set(id, func);
 	}
 	
-	emit(id, args) {
+	emitEvent(id, args) {
 		const listener = this.listeners.get(id);
 		if (listener) {
 			listener.apply(this, args);

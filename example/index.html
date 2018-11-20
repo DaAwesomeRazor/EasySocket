@@ -6,7 +6,11 @@
 		<script>
 			const socket = new EasySocket("ws://localhost:1000");
 			socket.on("connect", function() {
-				socket.send("test", 123, 321);
+				socket.emit("ping", 123);
+				
+				socket.on("pong", function(num) {
+					console.log(num);
+				})
 			});
 		</script>
 	</body>

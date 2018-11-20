@@ -1,6 +1,6 @@
 {
-  "name": "easysocket",
-  "version": "1.0.0",
+  "name": "bettersocket",
+  "version": "1.0.1",
   "description": "Easier socket implementation",
   "main": "server/index.js",
   "scripts": {
@@ -11,5 +11,9 @@
   "dependencies": {
     "notepack.io": "^2.1.3",
     "ws": "^6.1.0"
-  }
+  },
+  "directories": {
+    "example": "example"
+  },
+  "devDependencies": {}
 }
