@@ -24,6 +24,14 @@ class Server {
 			ws.on('message', msg => {
 				ws.user.onMessage(msg);
 			})
+			
+			ws.on('close', (arg) => {
+				ws.user.emitEvent("close", [arg]);
+			})
+			
+			ws.on('error', (arg) => {
+				ws.user.emitEvent("error", [arg]);
+			})
 		})
 	}
 	
@@ -57,7 +65,7 @@ class User {
 			args.push(arg)
 		}
 		args.shift()
-		this.ws.send(notepack.encode({id, args}))
+		if (this.ws.readyState == this.ws.OPEN) this.ws.send(notepack.encode({id, args}))
 	}
 	
 	on(id, func) {

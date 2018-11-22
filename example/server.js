@@ -9,5 +9,9 @@ server.on("connection", function(socket) {
 	socket.on("ping", function(num) {
 		socket.emit("pong", num * 2);
 	})
+	
+	socket.on("close", function() {
+		console.log('closed')
+	})
 })
 

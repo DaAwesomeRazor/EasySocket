@@ -35,12 +35,12 @@ class EasySocket {
 		this.emitEvent(id, args);
 	}
 	
-	onClose() {
-		this.emitEvent("disconnect");
+	onClose(arg) {
+		this.emitEvent("close", arg);
 	}
 	
-	onError() {
-		this.emitEvent("error");
+	onError(arg) {
+		this.emitEvent("error", arg);
 	}
 	
 	emit(id) {
